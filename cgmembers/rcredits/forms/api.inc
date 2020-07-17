@@ -33,7 +33,10 @@ function api($args = null) {
   global $mya;
   global $channel; $channel = TX_API;
 
-  $data = (array)json_decode($args);
+  $args = $args ?: ($_POST ?: $_GET);
+  extract(just('request', $args, NULL));
+  $data = (array)json_decode($request);
+  u\loga('API request', $data);
   extract(just('op userId password requests', $data, NULL));
   $mya = r\acct($userId);
   if (! $mya) {
@@ -61,14 +64,18 @@ function errorResponse($op, $userId, $error, $status = 'BAD') {
   $op .= '-response';
   $response = compact(ray('op userId error status'));
   header('Access-Control-Allow-Origin: *'); // allow access from web browsers
-  return (json_encode($response));
+  u\loga('API response', $response);
+  echo (json_encode($response));
+  exit();
 }
 
 function okResponse($op, $userId, $responses, $status = 'OK') {
   $op .= '-response';
   $response = compact(ray('op userId status responses'));
   header('Access-Control-Allow-Origin: *'); // allow access from web browsers
-  return (json_encode($response));
+  u\loga('API response', $response);
+  echo (json_encode($response));
+  exit();
 }
 
 function validateUserIds($userId, $requests) {
@@ -117,7 +124,7 @@ function generateInvoices($userId, $requests) {
 
 function generateInvoice($request) {
   global $mya;
-  extract(just('amount payerId billingDate dueDate nonce purpose status', $request, null));
+  extract(just('amount payerId billingDate dueDate nonce purpose', $request, null));
   $payerA = r\acct($payerId);
   if (! $payerA) { return ray('nonce status payerId amount error', $nonce, 'BAD', $payerId, $amount, 'Payer not found'); }
   $existing = db\get('nvid, status', 'r_invoices', ray('amount payer payee purpose created', $amount, $payerA->uid, $mya->uid, $purpose, $billingDate));

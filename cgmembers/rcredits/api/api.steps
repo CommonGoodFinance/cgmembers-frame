@@ -41,6 +41,7 @@ function extraSetup() {
  *
  * in: MAKE generateInvoices Setup
  *     MAKE getInvoiceStatus Setup
+ *     MAKE integrationTesting Setup
  *     MAKE makePayments Setup
  *     MAKE signUpUsers Setup
  *     MAKE validateUserIds Setup
@@ -52,6 +53,7 @@ function members($list) {return t\members($list);}
  *
  * in: MAKE generateInvoices Setup
  *     MAKE getInvoiceStatus Setup
+ *     MAKE integrationTesting Setup
  *     MAKE makePayments Setup
  */
 function relations($relations) {return t\relations($relations);}
@@ -218,6 +220,7 @@ function theResponseOpIsAndTheStatusIsAndTheErrorIs($op, $status, $error) {
  *     TEST generateInvoices AMemberInvoicesAnotherMemberTwiceForTheSameThingAndItWasApprovedTheFirstTime
  *     TEST getInvoiceStatus MemberInvoicesAnotherMemberAndGetsAPPROVEDThenGetsInvoiceStatus
  *     BOTH getInvoiceStatus MemberWantsToInvoiceAnotherMemberAndTheInvoiceIsAutopaidThenGetsInvoiceStatus
+ *     MAKE integrationTesting Setup
  *     BOTH makePayments MemberWantsToPayAnotherMemberAndSucceeds
  *     TEST makePayments MemberWantsToPayAnotherMemberButDoesNotHaveEnoughMoney
  *     BOTH makePayments AMemberPaysAnotherMemberTwiceForTheSameThingAndItWasDoneTheFirstTime
